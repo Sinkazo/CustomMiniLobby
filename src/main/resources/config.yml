@@ -1,0 +1,80 @@
+send-welcome-message: true
+welcome-message:
+  - ""
+  - "&f&m             &b Bienvenido &a{player} &f&m             "
+  - ""
+  - "&dNotCW Network &edisfruta de tu estadía"
+  - "&ediviértete en las modalidades del servidor!"
+  - ""
+  - "&f&m                                                       "
+
+send-welcome-sound: true
+welcome-sound: ENTITY_PLAYER_LEVELUP
+
+scoreboard:
+  enabled: true
+  title: '&aBienvenido al servidor'
+  lines:
+    - ''
+    - '&eHola &f%playername%'
+    - '&eAl servidor'
+    - ''
+    - '&fEstás en el lobby &a#2'
+    - ''
+    - '&fserver.name'
+
+no-break: true
+no-drop: true
+no-pickup: true
+no-damage: true
+no-pvp: true
+no-inventoryclick: true
+
+spawn:
+  enabled: true
+  always-teleport: true
+  hide-players: true
+  default-game-mode: adventure
+  location-set-message: "&aUbicación de aparición establecida."
+  no-spawn-set-message: "&cNo se ha establecido una ubicación de aparición."
+  spawn-disabled-message: "&cLa funcionalidad de aparición está actualmente deshabilitada."
+  world-not-exist-message: "&cEl mundo especificado en la ubicación de aparición no existe."
+  only-players-message: "&cSolo los jugadores pueden ejecutar este comando."
+  no-permission-message: "&cNo tienes permiso para ejecutar este comando."
+  location-deleted-message: "&aUbicación de aparición eliminada."
+  already-set-message: "&cYa existe una ubicación de aparición. Usa /spawn del para eliminarla primero."
+  teleported-message: "&aHas sido teletransportado a la ubicación de aparición."
+
+items-join-enabled: true
+items:
+  server-selector:
+    id: COMPASS
+    slot: 0
+    displayname: '&bSelector de Servidores'
+    amount: 1
+    lore:
+      - '&7Mira la información'
+      - '&7de nuestros servidores'
+      - '&7disponibles'
+    permission-node: '' # Vacío es igual a que no requiere permiso
+    command: '[player] servers'
+  buycraft:
+    id: GOLD_INGOT
+    slot: 4
+    displayname: '&cItem de Prueba 2'
+    amount: 1
+    lore:
+      - '&7Este es un'
+      - '&7Item de prueba 2'
+    permission-node: '' # Vacío es igual a que no requiere permiso
+    command: '[msg] notcw.tebex.io'
+  discord:
+    id: PAPER
+    slot: 8
+    displayname: '&5Únete a nuestro Discord'
+    amount: 1
+    lore:
+      - '&7Únete a nuestro'
+      - '&7servidor de discord'
+    permission-node: '' # Vacío es igual a que no requiere permiso
+    command: '[msg] &5Discord: https://discord.gg/3kE8N996sD'

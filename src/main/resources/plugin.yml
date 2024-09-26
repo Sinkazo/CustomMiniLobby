@@ -2,3 +2,9 @@ name: CustomMiniLobby
 version: '${project.version}'
 main: org.dark.customminilobby.CustomMiniLobby
 api-version: '1.21'
+commands:
+  cml:
+    description: "Comandos para manejar el lobby."
+    usage: "/cml [set|del|reload]"
+    permission: "cml.spawn"
+    permission-message: "No tienes permiso para usar este comando."
