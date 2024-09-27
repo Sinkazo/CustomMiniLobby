@@ -1,26 +1,29 @@
 send-welcome-message: true
 welcome-message:
   - ""
-  - "&f&m             &b Bienvenido &a{player} &f&m             "
+  - "&f&m             &b Welcome &a{player} &f&m             "
   - ""
-  - "&dNotCW Network &edisfruta de tu estadía"
-  - "&ediviértete en las modalidades del servidor!"
+  - "&dServerName Network &eenjoy and have fun"
+  - "&eyou need to test all game modes!"
   - ""
   - "&f&m                                                       "
 
+
+#You can use sounds from https://www.digminecraft.com/lists/sound_list_pc.php
 send-welcome-sound: true
 welcome-sound: ENTITY_PLAYER_LEVELUP
 
+#If you have PlaceholderAPI on your plugin folder. You can use any placeholder.
 scoreboard:
   enabled: true
-  title: "&e&lMi Servidor"
+  title: '&5&lServerName Network'
   lines:
-    - 'blank'
-    - "&7Bienvenido, %playername%!"
-    - "blank"
-    - "&aJugadores online: &f%server_online%"
-    - "blank"
-    - "&ewww.miservidor.com"
+    - blank
+    - '&d| &f&lNick » &d%playername%'
+    - blank
+    - '&d| &f&lMiniLobby » &d#2'
+    - blank
+    - www.server.net
 
 no-break: true
 no-drop: true
@@ -28,8 +31,9 @@ no-pickup: true
 no-damage: true
 no-pvp: true
 no-inventoryclick: true
-always-day: true
 never-rain: true
+#If you want you can also just use /gamerule doDaylightCycle false
+always-day: true
 
 
 spawn:
@@ -37,46 +41,46 @@ spawn:
   always-teleport: true
   hide-players: true
   default-game-mode: adventure
-  location-set-message: "&aUbicación de aparición establecida."
-  no-spawn-set-message: "&cNo se ha establecido una ubicación de aparición."
-  spawn-disabled-message: "&cLa funcionalidad de aparición está actualmente deshabilitada."
-  world-not-exist-message: "&cEl mundo especificado en la ubicación de aparición no existe."
-  only-players-message: "&cSolo los jugadores pueden ejecutar este comando."
-  no-permission-message: "&cNo tienes permiso para ejecutar este comando."
-  location-deleted-message: "&aUbicación de aparición eliminada."
-  already-set-message: "&cYa existe una ubicación de aparición. Usa /spawn del para eliminarla primero."
-  teleported-message: "&aHas sido teletransportado a la ubicación de aparición."
+  location-set-message: "&aSpawn location has been set."
+  no-spawn-set-message: "&cSpawn location has not yet been set."
+  spawn-disabled-message: "&cSpawn functionality is currently disabled.."
+  world-not-exist-message: "&cThe world specified in the spawn location does not exist.."
+  only-players-message: "&cOnly players can execute this command."
+  no-permission-message: "&cYou do not have permission to execute this command."
+  location-deleted-message: "&aSpawn location deleted."
+  already-set-message: "&cA spawn location already exists. Use /spawn del to remove it first."
+  teleported-message: "&aYou have been teleported to the spawn location."
 
+#You can use [player] to make a player execute the command. [msg] to send a message to the player and [console] to make a console execute command (Has not been tested [console]. Be careful)
 items-join-enabled: true
 items:
   server-selector:
     id: COMPASS
     slot: 0
-    displayname: '&bSelector de Servidores'
+    displayname: '&bServer selector'
     amount: 1
     lore:
       - '&7Mira la información'
       - '&7de nuestros servidores'
-      - '&7disponibles'
-    permission-node: '' # Vacío es igual a que no requiere permiso
+    permission-node: '' # Empty means that is not permission required to give the item
     command: '[player] servers'
-  buycraft:
-    id: GOLD_INGOT
-    slot: 4
-    displayname: '&cItem de Prueba 2'
-    amount: 1
-    lore:
-      - '&7Este es un'
-      - '&7Item de prueba 2'
-    permission-node: '' # Vacío es igual a que no requiere permiso
-    command: '[msg] notcw.tebex.io'
   discord:
     id: PAPER
     slot: 8
-    displayname: '&5Únete a nuestro Discord'
+    displayname: '&5Join to our Discord'
     amount: 1
     lore:
-      - '&7Únete a nuestro'
-      - '&7servidor de discord'
-    permission-node: '' # Vacío es igual a que no requiere permiso
-    command: '[msg] &5Discord: https://discord.gg/3kE8N996sD'
+      - '&7Join to our discord'
+      - '&7server'
+    permission-node: '' # Empty means that is not permission required to give the item
+    command: '[msg] &5Discord: https://discord.gg/server'
+  buycraft:
+    id: GOLD_INGOT
+    slot: 4
+    displayname: '&aShop'
+    amount: 1
+    lore:
+      - '&7Look our'
+      - '&7store'
+    permission-node: '' # Empty means that is not permission required to give the item
+    command: '[msg] &aTienda: &fserver.tebex.io'

@@ -4,6 +4,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.dark.customminilobby.Commands.CMLCommand;
+import org.dark.customminilobby.Listeners.ItemEventListener;
+import org.dark.customminilobby.Listeners.PlayerManager;
+import org.dark.customminilobby.Utilities.CustomScoreboard;
+import org.dark.customminilobby.Utilities.WorldManager;
 
 public final class CustomMiniLobby extends JavaPlugin {
 

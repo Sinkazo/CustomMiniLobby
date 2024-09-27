@@ -1,4 +1,4 @@
-package org.dark.customminilobby;
+package org.dark.customminilobby.Utilities;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;

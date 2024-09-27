@@ -1,4 +1,4 @@
-package org.dark.customminilobby;
+package org.dark.customminilobby.Listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.ChatColor;
+import org.dark.customminilobby.CustomMiniLobby;
 
 import java.util.HashSet;
 import java.util.List;

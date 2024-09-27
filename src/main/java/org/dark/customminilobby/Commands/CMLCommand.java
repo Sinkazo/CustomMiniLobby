@@ -1,4 +1,4 @@
-package org.dark.customminilobby;
+package org.dark.customminilobby.Commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -9,6 +9,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.dark.customminilobby.CustomMiniLobby;
+import org.dark.customminilobby.Utilities.CustomScoreboard;
 
 public class CMLCommand implements CommandExecutor {
     private final CustomMiniLobby plugin;

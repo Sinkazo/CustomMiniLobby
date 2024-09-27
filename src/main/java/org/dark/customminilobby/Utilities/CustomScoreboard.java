@@ -1,4 +1,4 @@
-package org.dark.customminilobby;
+package org.dark.customminilobby.Utilities;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
