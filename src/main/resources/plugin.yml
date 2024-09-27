@@ -2,6 +2,7 @@ name: CustomMiniLobby
 version: '${project.version}'
 main: org.dark.customminilobby.CustomMiniLobby
 api-version: '1.21'
+softdepend: [PlaceholderAPI]
 commands:
   cml:
     description: "Comandos para manejar el lobby."

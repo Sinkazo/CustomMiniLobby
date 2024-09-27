@@ -1,21 +1,22 @@
 package org.dark.customminilobby;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.scoreboard.Team;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 
 public class CustomScoreboard {
     private final JavaPlugin plugin;
-    private Scoreboard scoreboard;
-    private Objective objective;
+    private BukkitRunnable updateTask;
 
     public CustomScoreboard(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -23,54 +24,97 @@ public class CustomScoreboard {
     }
 
     public void createScoreboard() {
-        ScoreboardManager manager = Bukkit.getScoreboardManager();
-        scoreboard = manager.getNewScoreboard();
-        objective = scoreboard.registerNewObjective("lobby", "dummy", ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("scoreboard.title", "&eServidor")));
-        objective.setDisplaySlot(org.bukkit.scoreboard.DisplaySlot.SIDEBAR);
-
-        updateScoreboard();
+        if (updateTask != null) {
+            updateTask.cancel();
+        }
+        startUpdatingScoreboard();
+        updateScoreboard(); // Actualizamos el scoreboard al inicio
     }
 
     public void updateScoreboard() {
-        FileConfiguration config = plugin.getConfig();
-
-        // Limpiamos cualquier línea previa en el scoreboard
-        for (String entry : scoreboard.getEntries()) {
-            scoreboard.resetScores(entry);
-        }
-
-        List<String> lines = config.getStringList("scoreboard.lines");
-
-        int scoreValue = lines.size();  // Se usa para ordenar las líneas desde la parte superior
-        for (String line : lines) {
-            if (line.contains("%playername%")) {
-                line = line.replace("%playername%", "{player}"); // Se reemplazará después por el nombre del jugador
-            }
-            if (!line.isEmpty()) {
-                Score score = objective.getScore(ChatColor.translateAlternateColorCodes('&', line));
-                score.setScore(scoreValue);
-                scoreValue--;
-            }
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            updatePlayerScoreboard(player);
         }
     }
 
     public void applyToPlayer(Player player) {
+        updatePlayerScoreboard(player);
+    }
+
+    private void updatePlayerScoreboard(Player player) {
         if (!plugin.getConfig().getBoolean("scoreboard.enabled", true)) {
-            return; // Si el scoreboard no está habilitado, no hacer nada
+            player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
+            return;
         }
 
-        // Reemplazamos %playername% por el nombre real del jugador
-        Scoreboard personalScoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-        Objective personalObjective = personalScoreboard.registerNewObjective("lobby", "dummy", objective.getDisplayName());
-        personalObjective.setDisplaySlot(org.bukkit.scoreboard.DisplaySlot.SIDEBAR);
-
-        // Agregamos las líneas al scoreboard personal del jugador
-        for (String entry : scoreboard.getEntries()) {
-            String updatedEntry = entry.replace("{player}", player.getName());
-            Score score = personalObjective.getScore(updatedEntry);
-            score.setScore(scoreboard.getObjective("lobby").getScore(entry).getScore());
+        Scoreboard board = player.getScoreboard();
+        if (board == Bukkit.getScoreboardManager().getMainScoreboard()) {
+            board = Bukkit.getScoreboardManager().getNewScoreboard();
         }
 
-        player.setScoreboard(personalScoreboard);
+        // Limpiar el scoreboard anterior
+        if (board.getObjective("lobby") != null) {
+            board.getObjective("lobby").unregister();
+        }
+        for (Team team : board.getTeams()) {
+            team.unregister();
+        }
+
+        // Crear nuevo objetivo
+        String title = ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("scoreboard.title", "&eServidor"));
+        Objective obj = board.registerNewObjective("lobby", "dummy", title);
+        obj.setDisplaySlot(DisplaySlot.SIDEBAR);
+
+        FileConfiguration config = plugin.getConfig();
+        List<String> lines = config.getStringList("scoreboard.lines");
+
+        int lineCount = 0;
+        for (int i = lines.size() - 1; i >= 0; i--) {
+            String line = lines.get(i);
+            if (line.equalsIgnoreCase("blank")) {
+                line = getUniqueBlankLine(lineCount);
+            } else {
+                if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+                    line = PlaceholderAPI.setPlaceholders(player, line);
+                }
+                line = line.replace("%playername%", player.getName());
+                line = ChatColor.translateAlternateColorCodes('&', line);
+            }
+
+            Team team = board.registerNewTeam("line" + lineCount);
+            String entry = getUniqueCode(lineCount);
+            team.addEntry(entry);
+            team.setPrefix(line);
+            team.setSuffix("");
+            obj.getScore(entry).setScore(lineCount + 1);
+
+            lineCount++;
+        }
+
+        player.setScoreboard(board);
+    }
+
+    private void startUpdatingScoreboard() {
+        updateTask = new BukkitRunnable() {
+            @Override
+            public void run() {
+                updateScoreboard();
+            }
+        };
+        updateTask.runTaskTimer(plugin, 0L, 20L); // Actualiza cada segundo (20 ticks)
+    }
+
+    private String getUniqueBlankLine(int lineCount) {
+        return ChatColor.values()[lineCount % 16] + "" + ChatColor.values()[(lineCount + 1) % 16];
+    }
+
+    private String getUniqueCode(int lineCount) {
+        return ChatColor.values()[lineCount % 16] + "" + ChatColor.RESET;
+    }
+
+    public void stopUpdatingScoreboard() {
+        if (updateTask != null) {
+            updateTask.cancel();
+        }
     }
 }

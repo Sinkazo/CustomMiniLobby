@@ -13,15 +13,14 @@ welcome-sound: ENTITY_PLAYER_LEVELUP
 
 scoreboard:
   enabled: true
-  title: '&aBienvenido al servidor'
+  title: "&e&lMi Servidor"
   lines:
-    - ''
-    - '&eHola &f%playername%'
-    - '&eAl servidor'
-    - ''
-    - '&fEstás en el lobby &a#2'
-    - ''
-    - '&fserver.name'
+    - 'blank'
+    - "&7Bienvenido, %playername%!"
+    - "blank"
+    - "&aJugadores online: &f%server_online%"
+    - "blank"
+    - "&ewww.miservidor.com"
 
 no-break: true
 no-drop: true
@@ -29,6 +28,9 @@ no-pickup: true
 no-damage: true
 no-pvp: true
 no-inventoryclick: true
+always-day: true
+never-rain: true
+
 
 spawn:
   enabled: true
