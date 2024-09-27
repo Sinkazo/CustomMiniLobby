@@ -38,7 +38,7 @@ public class ItemEventListener implements Listener {
                 lore.replaceAll(line -> ChatColor.translateAlternateColorCodes('&', line));
 
                 if (amount <= 0) {
-                    plugin.getLogger().warning("La cantidad de " + key + " debe ser mayor que 0.");
+                    plugin.getLogger().warning("The amount must be " + key + " higher than 0.");
                     continue;
                 }
 
@@ -57,13 +57,13 @@ public class ItemEventListener implements Listener {
                         if (player.getInventory().getItem(slot) == null) {
                             player.getInventory().setItem(slot, item);
                         } else {
-                            plugin.getLogger().info("El jugador " + player.getName() + " ya tiene el ítem " + displayName + " en el slot " + slot + ".");
+                            plugin.getLogger().info("Player " + player.getName() + " already has item " + displayName + " on his slot " + slot + ".");
                         }
                     } else {
-                        plugin.getLogger().info("El jugador " + player.getName() + " ya tiene el ítem " + displayName + " en su inventario.");
+                        plugin.getLogger().info("Player " + player.getName() + " already has items " + displayName + " on his inventory.");
                     }
                 } else {
-                    plugin.getLogger().warning("Material " + id + " no encontrado para " + key + ".");
+                    plugin.getLogger().warning("Material " + id + " not found " + key + ".");
                 }
             }
         }
@@ -87,12 +87,12 @@ public class ItemEventListener implements Listener {
                         if (command != null && !command.isEmpty()) {
                             executeCommand(command.replace("%player%", player.getName()), player);
                         } else {
-                            player.sendMessage(ChatColor.RED + "El comando está vacío para el ítem " + displayName + ".");
+                            player.sendMessage(ChatColor.RED + "The command is empty for the item " + displayName + ".");
                         }
                         return;
                     }
                 }
-                player.sendMessage(ChatColor.RED + "No se encontró un comando asociado para el ítem " + displayName + ".");
+                player.sendMessage(ChatColor.RED + "No associated command was found for item " + displayName + ".");
             }
         }
     }

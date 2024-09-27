@@ -124,7 +124,7 @@ public class PlayerManager implements Listener {
             Sound soundEnum = Sound.valueOf(sound.toUpperCase());
             player.playSound(player.getLocation(), soundEnum, 1.0F, 1.0F);
         } catch (IllegalArgumentException e) {
-            Bukkit.getLogger().warning("El sonido " + sound + " no es válido. Verifica tu config.yml.");
+            Bukkit.getLogger().warning("Sound " + sound + " is not valid. Check your config.yml.");
         }
     }
 

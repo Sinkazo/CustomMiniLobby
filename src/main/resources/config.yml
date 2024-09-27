@@ -1,3 +1,4 @@
+#Custom Mini Lobby Config file
 send-welcome-message: true
 welcome-message:
   - ""
@@ -52,6 +53,7 @@ spawn:
   teleported-message: "&aYou have been teleported to the spawn location."
 
 #You can use [player] to make a player execute the command. [msg] to send a message to the player and [console] to make a console execute command (Has not been tested [console]. Be careful)
+#If you want to make any change on items join you need to restart the server to apply changes
 items-join-enabled: true
 items:
   server-selector:
