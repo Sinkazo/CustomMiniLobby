@@ -9,3 +9,7 @@ commands:
     usage: "/cml [set|del|reload]"
     permission: "cml.spawn"
     permission-message: "No tienes permiso para usar este comando."
+  mostrarcara:
+    description: "Muestra la cara de la skin de un jugador en un mapa."
+    usage: "/mostrarcara <nombre_jugador>"
+    permission: "cml.imagemap"

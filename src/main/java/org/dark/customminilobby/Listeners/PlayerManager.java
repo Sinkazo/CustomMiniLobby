@@ -11,9 +11,18 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.dark.customminilobby.CustomMiniLobby;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
 public class PlayerManager implements Listener {
@@ -62,9 +71,9 @@ public class PlayerManager implements Listener {
             teleportToSpawn(player);
         }
 
-        // Mostrar mensaje de bienvenida si está habilitado
+        // Mostrar mensaje de bienvenida con la cara del jugador
         if (config.getBoolean("send-welcome-message", true)) {
-            sendWelcomeMessage(player);
+            sendWelcomeMessageWithFace(player);
         }
 
         // Reproducir sonido de bienvenida si está habilitado
@@ -101,18 +110,82 @@ public class PlayerManager implements Listener {
         player.sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("spawn.teleported-message")));
     }
 
-    // Método para enviar el mensaje de bienvenida
-    private void sendWelcomeMessage(Player player) {
+    // Método para enviar el mensaje de bienvenida con la cara del jugador
+    private void sendWelcomeMessageWithFace(Player player) {
         FileConfiguration config = plugin.getConfig();
-        List<String> welcomeMessages = config.getStringList("welcome-message");
+        String targetName = player.getName();
 
-        for (String message : welcomeMessages) {
-            if (message.isEmpty()) {
-                player.sendMessage("");
-            } else {
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', message.replace("{player}", player.getName())));
+        try {
+            // Descargar la skin del jugador
+            URL url = new URL("https://minotar.net/skin/" + targetName);
+            BufferedImage skin = ImageIO.read(url);
+
+            // Extraer la cara (8x8 píxeles)
+            BufferedImage face = skin.getSubimage(8, 8, 8, 8);
+
+            // Convertir la cara en líneas de texto coloreadas
+            String[] faceLines = new String[8];
+            for (int y = 0; y < face.getHeight(); y++) {
+                StringBuilder line = new StringBuilder();
+                for (int x = 0; x < face.getWidth(); x++) {
+                    int rgb = face.getRGB(x, y);
+                    ChatColor closestColor = getClosestChatColor(new Color(rgb, true));
+                    line.append(closestColor).append("█"); // Usamos el carácter █ para simular el píxel
+                }
+                faceLines[y] = line.toString();
+            }
+
+            // Leer el mensaje de bienvenida desde el config.yml
+            List<String> welcomeMessages = config.getStringList("welcome-message");
+            for (String message : welcomeMessages) {
+                // Reemplazar los placeholders con las líneas de la cara y otros valores
+                message = message
+                        .replace("{caralinea1}", faceLines[0])
+                        .replace("{caralinea2}", faceLines[1])
+                        .replace("{caralinea3}", faceLines[2])
+                        .replace("{caralinea4}", faceLines[3])
+                        .replace("{caralinea5}", faceLines[4])
+                        .replace("{caralinea6}", faceLines[5])
+                        .replace("{caralinea7}", faceLines[6])
+                        .replace("{caralinea8}", faceLines[7])
+                        .replace("{player}", player.getName());
+
+                // Enviar el mensaje procesado al jugador
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+            }
+
+        } catch (IOException e) {
+            player.sendMessage(ChatColor.RED + "No se pudo cargar la skin del jugador.");
+            e.printStackTrace();
+        }
+    }
+
+    // Método para obtener el color de chat más cercano al color dado
+    private ChatColor getClosestChatColor(Color color) {
+        ChatColor[] colors = ChatColor.values();
+        ChatColor closest = ChatColor.WHITE;
+        double minDistance = Double.MAX_VALUE;
+
+        for (ChatColor chatColor : colors) {
+            if (!chatColor.isColor()) continue;
+
+            Color awtColor = chatColor.asBungee().getColor();
+            double distance = getColorDistance(color, awtColor);
+            if (distance < minDistance) {
+                minDistance = distance;
+                closest = chatColor;
             }
         }
+
+        return closest;
+    }
+
+    // Método para calcular la distancia entre dos colores
+    private double getColorDistance(Color c1, Color c2) {
+        int redDiff = c1.getRed() - c2.getRed();
+        int greenDiff = c1.getGreen() - c2.getGreen();
+        int blueDiff = c1.getBlue() - c2.getBlue();
+        return Math.sqrt(redDiff * redDiff + greenDiff * greenDiff + blueDiff * blueDiff);
     }
 
     // Método para reproducir el sonido de bienvenida
@@ -127,7 +200,6 @@ public class PlayerManager implements Listener {
             Bukkit.getLogger().warning("Sound " + sound + " is not valid. Check your config.yml.");
         }
     }
-
     // Otros eventos, como los de no-break, no-drop, etc., se mantienen igual...
 
     @EventHandler

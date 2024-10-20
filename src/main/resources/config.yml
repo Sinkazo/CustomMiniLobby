@@ -1,13 +1,14 @@
 #Custom Mini Lobby Config file
 send-welcome-message: true
 welcome-message:
-  - ""
-  - "&f&m             &b Welcome &a{player} &f&m             "
-  - ""
-  - "&dServerName Network &eenjoy and have fun"
-  - "&eyou need to test all game modes!"
-  - ""
-  - "&f&m                                                       "
+  - '{caralinea1}'
+  - '{caralinea2}&f&m             &b Bienvenido &a{player} &f&m             '
+  - '{caralinea3}'
+  - '{caralinea4}&dNotCW Network &edisfruta de tu estadía'
+  - '{caralinea5}&ediviértete en las modalidades del servidor!'
+  - '{caralinea6}&eRecuerda leer las reglas del servidor'
+  - '{caralinea7}'
+  - '{caralinea8}&f&m                                                       '
 
 
 #You can use sounds from https://www.digminecraft.com/lists/sound_list_pc.php

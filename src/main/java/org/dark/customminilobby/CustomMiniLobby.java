@@ -35,6 +35,8 @@ public final class CustomMiniLobby extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PlayerManager(this), this);
         this.getCommand("cml").setExecutor(new CMLCommand(this));
         getServer().getPluginManager().registerEvents(new ItemEventListener(this), this);
+        getCommand("mostrarcara").setExecutor(new SkinMapCommand());
+
 
         // Comprobar si PlaceholderAPI está habilitado
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
